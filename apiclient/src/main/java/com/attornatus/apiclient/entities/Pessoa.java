@@ -30,22 +30,6 @@ public class Pessoa implements Serializable {
 	public Pessoa() {
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(data_nascimento, id, nome);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if ((obj == null) || (getClass() != obj.getClass()))
-			return false;
-		Pessoa other = (Pessoa) obj;
-		return Objects.equals(data_nascimento, other.data_nascimento) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome);
-	}
-
 	public Pessoa(Long id, String nome, LocalDate data_nascimento) {
 		this.id = id;
 		this.nome = nome;
@@ -74,6 +58,23 @@ public class Pessoa implements Serializable {
 
 	public void setData_nascimento(LocalDate data_nascimento) {
 		this.data_nascimento = data_nascimento;
+	}
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(data_nascimento, id, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if ((obj == null) || (getClass() != obj.getClass()))
+			return false;
+		Pessoa other = (Pessoa) obj;
+		return Objects.equals(data_nascimento, other.data_nascimento) && Objects.equals(id, other.id)
+				&& Objects.equals(nome, other.nome);
 	}
 
 }

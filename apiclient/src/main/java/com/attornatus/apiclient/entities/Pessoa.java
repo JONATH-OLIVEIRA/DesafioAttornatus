@@ -2,7 +2,9 @@ package com.attornatus.apiclient.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +31,11 @@ public class Pessoa implements Serializable {
 
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate data_nascimento;
+
+	@ManyToMany
+	@JoinTable(name = "tb_endereco_pessoa", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
+
+	Set<Endereco> enderecos = new HashSet<>();
 
 	public Pessoa() {
 	}
@@ -59,7 +69,6 @@ public class Pessoa implements Serializable {
 	public void setData_nascimento(LocalDate data_nascimento) {
 		this.data_nascimento = data_nascimento;
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -75,6 +84,14 @@ public class Pessoa implements Serializable {
 		Pessoa other = (Pessoa) obj;
 		return Objects.equals(data_nascimento, other.data_nascimento) && Objects.equals(id, other.id)
 				&& Objects.equals(nome, other.nome);
+	}
+
+	public Set<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(Set<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 }

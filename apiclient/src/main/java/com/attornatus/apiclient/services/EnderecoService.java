@@ -10,53 +10,60 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.attornatus.apiclient.dto.PessoaDTO;
-import com.attornatus.apiclient.entities.Pessoa;
-import com.attornatus.apiclient.repositories.PessoaRepository;
+import com.attornatus.apiclient.dto.EnderecoDTO;
+import com.attornatus.apiclient.entities.Endereco;
+import com.attornatus.apiclient.repositories.EnderecoRepository;
 import com.attornatus.apiclient.service.exceptions.DatabaseException;
 import com.attornatus.apiclient.service.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class PessoaService {
+public class EnderecoService {
 
 	@Autowired
-	private PessoaRepository repository;
+	private EnderecoRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<PessoaDTO> findAllPaged(Pageable pageRequest) {
-		Page<Pessoa> list = repository.findAll(pageRequest);
+	public Page<EnderecoDTO> findAllPaged(Pageable pageRequest) {
+		Page<Endereco> list = repository.findAll(pageRequest);
 
-		return list.map(x -> new PessoaDTO(x));
+		return list.map(x -> new EnderecoDTO(x));
 	}
 
 	@Transactional(readOnly = true)
-	public PessoaDTO findaById(Long id) {
-		Optional<Pessoa> obj = repository.findById(id);
-		Pessoa entity = obj.orElseThrow(() -> new ResourceNotFoundException("Nao Encontrado"));
-		return new PessoaDTO(entity, entity.getEnderecos());
+	public EnderecoDTO findaById(Long id) {
+		Optional<Endereco> obj = repository.findById(id);
+		Endereco entity = obj.orElseThrow(() -> new ResourceNotFoundException("Nao Encontrado"));
+		return new EnderecoDTO(entity);
 	}
 
 	@Transactional(readOnly = true)
-	public PessoaDTO insert(PessoaDTO dto) {
-		Pessoa entity = new Pessoa();
-		entity.setNome(dto.getNome());
-		entity.setData_nascimento(dto.getData_nascimento());
+	public EnderecoDTO insert(EnderecoDTO dto) {
+		Endereco entity = new Endereco();
+
+		entity.setLogradouro(dto.getLogradouro());
+		entity.setCep(dto.getCep());
+		entity.setCidade(dto.getCidade());
+		entity.setNumero(dto.getNumero());
+
 		entity = repository.save(entity);
-		return new PessoaDTO(entity);
+		return new EnderecoDTO(entity);
 	}
 
 	@Transactional
-	public PessoaDTO update(PessoaDTO dto, Long id) {
+	public EnderecoDTO update(EnderecoDTO dto, Long id) {
 		try {
-			Pessoa entity = repository.getById(id);
-			entity.setNome(dto.getNome());
-			entity.setData_nascimento(dto.getData_nascimento());
-			entity = repository.save(entity);
+			Endereco entity = repository.getById(id);
+
+			entity.setLogradouro(dto.getLogradouro());
+			entity.setCep(dto.getCep());
+			entity.setCidade(dto.getCidade());
+			entity.setNumero(dto.getNumero());
+
 			entity = repository.save(entity);
 
-			return new PessoaDTO(entity);
+			return new EnderecoDTO(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id nao encontrado" + " " + id);
 		}

@@ -1,11 +1,16 @@
 package com.attornatus.apiclient.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import com.attornatus.apiclient.entities.Endereco;
 import com.attornatus.apiclient.entities.Pessoa;
 
-public class PessoaDTO implements Serializable{
+public class PessoaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +18,22 @@ public class PessoaDTO implements Serializable{
 	private String nome;
 	private LocalDate data_nascimento;
 
+	private List<EnderecoDTO> enderecos = new ArrayList<>();
+
 	public PessoaDTO() {
+	}
+
+	public PessoaDTO(Pessoa entity, Set<Endereco> enderecos) {
+		this(entity);
+		enderecos.forEach(end -> this.enderecos.add(new EnderecoDTO(end)));
+	}
+
+	public List<EnderecoDTO> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<EnderecoDTO> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 	public PessoaDTO(long id, String nome, LocalDate data_nascimento) {

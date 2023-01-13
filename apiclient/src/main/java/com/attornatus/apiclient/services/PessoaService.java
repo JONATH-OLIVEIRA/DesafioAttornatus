@@ -32,7 +32,7 @@ public class PessoaService {
 	}
 
 	@Transactional(readOnly = true)
-	public PessoaDTO findaById(Long id) {
+	public PessoaDTO findById(Long id) {
 		Optional<Pessoa> obj = repository.findById(id);
 		Pessoa entity = obj.orElseThrow(() -> new ResourceNotFoundException("Nao Encontrado"));
 		return new PessoaDTO(entity, entity.getEnderecos());
@@ -48,7 +48,7 @@ public class PessoaService {
 	}
 
 	@Transactional
-	public PessoaDTO update(PessoaDTO dto, Long id) {
+	public PessoaDTO update(Long id, PessoaDTO dto) {
 		try {
 			Pessoa entity = repository.getReferenceById(id);
 			entity.setNome(dto.getNome());

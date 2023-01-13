@@ -46,14 +46,14 @@ public class PessoaResource {
 	// faz a buscar por id
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PessoaDTO> findaById(@PathVariable Long id) {
-		PessoaDTO dto = service.findaById(id);
+		PessoaDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	// atualiza a pessoa
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<PessoaDTO> update(@RequestBody PessoaDTO dto, @PathVariable Long id) {
-		dto = service.update(dto, id);
+		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 
 	}

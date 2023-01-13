@@ -50,10 +50,9 @@ public class PessoaService {
 	@Transactional
 	public PessoaDTO update(PessoaDTO dto, Long id) {
 		try {
-			Pessoa entity = repository.getById(id);
+			Pessoa entity = repository.getReferenceById(id);
 			entity.setNome(dto.getNome());
 			entity.setData_nascimento(dto.getData_nascimento());
-			entity = repository.save(entity);
 			entity = repository.save(entity);
 
 			return new PessoaDTO(entity);

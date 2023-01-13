@@ -1,5 +1,6 @@
 package com.attornatus.apiclient.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class EnderecoService {
 
 	@Autowired
 	private EnderecoRepository repository;
-
+	
 	@Transactional(readOnly = true)
 	public Page<EnderecoDTO> findAllPaged(Pageable pageRequest) {
 		Page<Endereco> list = repository.findAll(pageRequest);
@@ -37,16 +38,28 @@ public class EnderecoService {
 		Endereco entity = obj.orElseThrow(() -> new ResourceNotFoundException("Nao Encontrado"));
 		return new EnderecoDTO(entity);
 	}
+			
+	@Transactional(readOnly = true)	
+	public List<EnderecoDTO> findByAdrress (String id_pessoa){
+		List<EnderecoDTO> enderecoPessoa = repository.findByAdrressId(id_pessoa);
+		return enderecoPessoa;
+		
+	}
+	
 
 	@Transactional(readOnly = true)
 	public EnderecoDTO insert(EnderecoDTO dto) {
+		
+			
 		Endereco entity = new Endereco();
 
 		entity.setLogradouro(dto.getLogradouro());
 		entity.setCep(dto.getCep());
 		entity.setCidade(dto.getCidade());
 		entity.setNumero(dto.getNumero());
-
+		entity.setEnd_principal(dto.isEnd_principal());
+		entity.setId_pessoa(dto.getId_pessoa());
+		
 		entity = repository.save(entity);
 		return new EnderecoDTO(entity);
 	}
@@ -54,12 +67,13 @@ public class EnderecoService {
 	@Transactional
 	public EnderecoDTO update(EnderecoDTO dto, Long id) {
 		try {
-			Endereco entity = repository.getById(id);
+			Endereco entity = repository.getReferenceById(id);
 
 			entity.setLogradouro(dto.getLogradouro());
 			entity.setCep(dto.getCep());
 			entity.setCidade(dto.getCidade());
 			entity.setNumero(dto.getNumero());
+			entity.setEnd_principal(dto.isEnd_principal());
 
 			entity = repository.save(entity);
 

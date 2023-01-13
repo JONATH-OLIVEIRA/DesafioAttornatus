@@ -26,7 +26,7 @@ public class PessoaResource {
 	@Autowired
 	private PessoaService service;
 
-	// faz a listagem das pessoas
+	// faz a listagem das pessoas paginada
 	@GetMapping()
 	public ResponseEntity<Page<PessoaDTO>> findAll(Pageable pageable) {
 

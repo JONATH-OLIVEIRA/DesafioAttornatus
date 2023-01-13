@@ -1,6 +1,7 @@
 package com.attornatus.apiclient.entities;
 
 import java.io.Serializable;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,7 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,9 +33,10 @@ public class Pessoa implements Serializable {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate data_nascimento;
 
-	@ManyToMany
-	@JoinTable(name = "tb_endereco_pessoa", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
-
+	@OneToMany
+	@JoinTable(name = "tb_endereco_pessoa", joinColumns = 
+	@JoinColumn(name = "pessoa_id"), inverseJoinColumns = 
+	@JoinColumn(name = "endereco_id"))
 	Set<Endereco> enderecos = new HashSet<>();
 
 	public Pessoa() {

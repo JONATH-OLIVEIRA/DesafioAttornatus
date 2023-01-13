@@ -2,6 +2,8 @@ package com.attornatus.apiclient.resource;
 
 import java.net.URI;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +37,15 @@ public class EnderecoResource {
 		Page<EnderecoDTO> list = service.findAllPaged(pageable);
 
 		return ResponseEntity.ok().body(list);
+	}
+	
+	// faz as listagem dos enderecos da pessoa passando o id da pessoa por requisicao
+	@RequestMapping(value = "/listarEnderecoPessoa", method = RequestMethod.GET)	
+	public List<EnderecoDTO> findByAdrress(@RequestParam(name = "id", required = false) String id_pessoa) {
+
+		List<EnderecoDTO> list = service.findByAdrress(id_pessoa);
+		
+		return list;
 	}
 
 	// faz a insercao dos enderecos
